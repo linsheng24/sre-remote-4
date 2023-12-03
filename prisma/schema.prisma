@@ -1,0 +1,52 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Recipient {
+  id      Int    @id @default(autoincrement())
+  address String
+  name    String
+  phone   String
+}
+
+model Location {
+  id      Int               @id @default(autoincrement())
+  title   String
+  city    String
+  address String
+  details ShippingDetails[]
+}
+
+model Shipping {
+  id      Int               @id @default(autoincrement())
+  sno     String
+  details ShippingDetails[]
+}
+
+model ShippingDetails {
+  id Int @id @default(autoincrement())
+
+  shipping   Shipping @relation(fields: [shippingId], references: [id])
+  shippingId Int
+  location   Location @relation(fields: [locationId], references: [id])
+  locationId Int
+  status     Status   @default(CREATED)
+}
+
+enum Status {
+  CREATED
+  PACKAGE_RECEIVED
+  IN_TRANSIT
+  OUT_FOR_DELIVERY
+  DELIVERY_ATTEMPTED
+  DELIVERED
+  EXCEPTION
+}
