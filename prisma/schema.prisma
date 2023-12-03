@@ -11,24 +11,37 @@ datasource db {
 }
 
 model Recipient {
-  id      Int    @id @default(autoincrement())
-  address String
-  name    String
-  phone   String
+  id        Int      @id @default(autoincrement())
+  address   String
+  name      String
+  phone     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Shipping Shipping[]
 }
 
 model Location {
-  id      Int               @id @default(autoincrement())
-  title   String
-  city    String
-  address String
+  id        Int      @id @default(autoincrement())
+  title     String
+  city      String
+  address   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   details ShippingDetails[]
 }
 
 model Shipping {
-  id      Int               @id @default(autoincrement())
-  sno     String
-  details ShippingDetails[]
+  id                 Int               @id @default(autoincrement())
+  sno                String
+  details            ShippingDetails[]
+  estimated_delivery DateTime?
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+
+  recipientId Int
+  recipient   Recipient @relation(fields: [recipientId], references: [id])
 }
 
 model ShippingDetails {
@@ -39,6 +52,8 @@ model ShippingDetails {
   location   Location @relation(fields: [locationId], references: [id])
   locationId Int
   status     Status   @default(CREATED)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 enum Status {
