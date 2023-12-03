@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,50 +8,51 @@ datasource db {
 }
 
 model Recipient {
-  id        Int      @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   address   String
   name      String
   phone     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  Shipping Shipping[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Shipping  Shipping[]
 }
 
 model Location {
-  id        Int      @id @default(autoincrement())
+  id        Int               @id @default(autoincrement())
   title     String
   city      String
   address   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  details ShippingDetails[]
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  details   ShippingDetails[]
 }
 
 model Shipping {
   id                 Int               @id @default(autoincrement())
-  sno                String
-  details            ShippingDetails[]
+  sno                String            @unique
   estimated_delivery DateTime?
   createdAt          DateTime          @default(now())
   updatedAt          DateTime          @updatedAt
+  recipientId        Int
   status             Status            @default(CREATED)
+  recipient          Recipient         @relation(fields: [recipientId], references: [id])
+  details            ShippingDetails[]
 
-  recipientId Int
-  recipient   Recipient @relation(fields: [recipientId], references: [id])
+  @@index([recipientId], map: "Shipping_recipientId_fkey")
 }
 
 model ShippingDetails {
-  id Int @id @default(autoincrement())
-
-  shipping   Shipping @relation(fields: [shippingId], references: [id])
+  id         Int      @id @default(autoincrement())
   shippingId Int
-  location   Location @relation(fields: [locationId], references: [id])
   locationId Int
   status     Status   @default(CREATED)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+  location   Location @relation(fields: [locationId], references: [id])
+  shipping   Shipping @relation(fields: [shippingId], references: [id])
+
+  @@index([locationId], map: "ShippingDetails_locationId_fkey")
+  @@index([shippingId], map: "ShippingDetails_shippingId_fkey")
 }
 
 enum Status {
