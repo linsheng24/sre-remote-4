@@ -7,4 +7,4 @@
 
   - 目前專案使用 pm2 這個 process 管理的工具來啟動，並且自帶錯誤重啟的功能。
   - 完成 fake API 及 Query API，目前 cache 尚未補上。
-  - 排程未使用 crontab，而是使用 nest 內建的 schedule module，由程式做管理，輸出結果目前單純用 console.log 做輸出。
+  - 排程未使用 crontab，而是使用 nest 內建的 schedule module，一樣是吃 cron expression，由程式做管理，輸出結果目前單純用 console.log 做輸出。
