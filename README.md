@@ -2,6 +2,8 @@
 
   - 專案採用 typescript 配合 nest.js 框架，架構上採用最簡單的架構，因為功能比較簡單，接近一個 prototype，單純在 AppModule 上開了 controller，並且所有邏輯在上面完成，沒有做邏輯切分。
   - 資料庫使用 RDS Mysql。
+  - schema 位於 prisma/schema.prisma，並且只添加必要欄位
+
 
 - 說明你的專案達成哪些需求及怎麼部署的，例如： 完成哪些功能、需求？ 快取做到什麼程度？ 排程工作的結果是否有儲存到 S3 或其他地方？
 
