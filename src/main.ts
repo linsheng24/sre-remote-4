@@ -10,7 +10,7 @@ async function bootstrap() {
     name: 'CACHE_SERVICE',
     transport: Transport.REDIS,
     options: {
-      host: 'localhost',
+      host: process.env.REDIS_URL,
       port: 6379,
     },
   });
